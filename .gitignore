@@ -4,7 +4,7 @@ out/
 !**/src/test/**/out/
 .kotlin
 .idea/
-*.iml
+caixa_eletronico_foda.iml
 
 ### Eclipse ###
 .apt_generated
