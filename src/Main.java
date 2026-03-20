@@ -9,6 +9,9 @@ public class Main {
         //Scanner scanner = new Scanner(System.in);
         //int input = scanner.nextInt();
 
+        int saldo = 100;
+        int bolso = 20;
+
         while(true){
             try{
                 Scanner input = new Scanner(System.in);
@@ -17,11 +20,20 @@ public class Main {
 
                 // preencher if else com as funcoes de cada opcao do menu, usando os services e models criados
                 if (opcao == 1) {
-                    System.out.println("opcao 1");
+                    System.out.println("Você possui: R$" + saldo + " Na conta bancaria");
+                    System.out.println("Você possui: R$" + bolso + " No bolso");
                 } else if (opcao == 2) {
-                    System.out.println("opcao 2");
+                    System.out.println("Quanto você quer depositar? Você possui R$" + bolso );
+                    int deposito = input.nextInt();
+                    saldo += deposito;
+                    bolso -= deposito;
+                    System.out.println("Depositado R$ " + deposito);
                 } else if (opcao == 3) {
-                    System.out.println("opcao 3");
+                    System.out.println("Quanto você quer sacar? Você possui R$" + saldo );
+                    int sacar = input.nextInt();
+                    bolso += sacar;
+                    saldo -= sacar;
+                    System.out.println("Sacado R$ " + sacar);
                 } else if (opcao == 4) {
                     System.out.println("opcao 4");
                 } else if (opcao == 5) {
