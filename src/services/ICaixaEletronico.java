@@ -1,6 +1,6 @@
 package services;
 
-public Interface ICaixaEletronico {
+public interface ICaixaEletronico {
     public String pegaValorTotalDisponivel();
     
     public String sacar(int valor);
