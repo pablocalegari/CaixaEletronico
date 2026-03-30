@@ -9,7 +9,9 @@ public class CaixaEletronico implements ICaixaEletronico {
     public String sacar(int valor){}
     
     @Override
-    public String pegaRelatorioCedulas(){}
+    public String pegaRelatorioCedulas(){
+        int cedulaRepositorio = new int[6][2];
+    }
     
     @Override
     public String reposicaoCedulas(int cedula, int quantidade){}
