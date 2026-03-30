@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 // teste commit ignora 
 
-public class Main {
+public class CaixaEletronico {
     public static void main(String[] args) {
         // esses 2 comentarios sao codigo para futura feature de login
         //Scanner scanner = new Scanner(System.in);
