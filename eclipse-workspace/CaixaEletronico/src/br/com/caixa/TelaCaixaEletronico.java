@@ -31,6 +31,11 @@ public class TelaCaixaEletronico extends JFrame {
 		JButton reposicao = new JButton("Repor Cédulas");
 		JButton minimo = new JButton("Conta Minima");
 		JButton sair = new JButton("Sair");
+		sair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		
 		painelBotoes.add(saque);
 		painelBotoes.add(relatorio);
