@@ -1,4 +1,5 @@
 import services.ICaixaEletronico;
+import services.SaqueService;
 import java.util.Scanner;
 import java.io.IOException;
 
@@ -18,11 +19,6 @@ public class CaixaEletronico implements ICaixaEletronico {
             System.out.println("Um erro ocorreu: " + e);
         }
 
-        return "";
-    }
-
-    @Override
-    public String pegaRelatorioCedulas() {
         return "";
     }
 
@@ -60,9 +56,11 @@ public class CaixaEletronico implements ICaixaEletronico {
                                     {10, 350}, 
                                     {5, 450}, 
                                     {2, 500}};
-                                    
-        
-        System.out.println(pegaRelatorioCedulas(cedulaRepositorio));
+
+        //System.out.println(pegaRelatorioCedulas(cedulaRepositorio));
+
+
+
     }
     
     
@@ -75,6 +73,7 @@ public class CaixaEletronico implements ICaixaEletronico {
         System.out.println("[3] Sacar");
         System.out.println("[4] Transferir");
         System.out.println("[5] Sair");
-        }*/
+        }
+        */
         
 }
