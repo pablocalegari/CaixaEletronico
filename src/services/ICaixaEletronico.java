@@ -6,7 +6,9 @@ public interface ICaixaEletronico {
     public String sacar(int valor);
     
     public String pegaRelatorioCedulas();
-    
+
+    String pegaRelatorioCedulas(int[][] cedulas);
+
     public String reposicaoCedulas(int cedula, int quantidade);
     
     public String armazenaContaMinima();
