@@ -1,5 +1,6 @@
 import services.ICaixaEletronico;
 import services.SaqueService;
+import models;
 import java.util.Scanner;
 import java.io.IOException;
 
@@ -29,12 +30,19 @@ public class CaixaEletronico implements ICaixaEletronico {
     @Override
     public String sacar(int valor){
         try{
-
+            if (SaqueService.isSaqueValido == false){
+                catch (Exception e){
+                    System.out.println("Um erro ocorreu: " + e);
+                }
+                
+                
+            }
+                
         } catch (Exception e){
             System.out.println("Um erro ocorreu: " + e);
         }
 
-        return "";
+        return "Saque efetuado com sucesso! Saldo da conta >> " + ;
     }
 
     @Override
