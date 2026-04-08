@@ -30,14 +30,22 @@ public class CaixaEletronico implements ICaixaEletronico {
     @Override
     public String sacar(int valor){
         try{
+            // 08/04 - Rafael: vou testar isso ainda, talvez esteja errado (fiz na aula do angel)
+            SaqueService.isSaqueValido(valor);
             if (SaqueService.isSaqueValido == false){
-                catch (Exception e){
-                    System.out.println("Um erro ocorreu: " + e);
+                catch (){
+                    System.out.println("Invalido: tentou sacar cedulas de valor 1 e 3");
                 }
-                
-                
+            }   
+            if (User.getSaldo < 0){
+                catch(){
+                    System.out.println("Invalido: Saldo negativo");
+                }
             }
-                
+            
+            int novoSaldo = User.getSaldo - valor
+            User.setSaldo(novoSaldo)
+            
         } catch (Exception e){
             System.out.println("Um erro ocorreu: " + e);
         }
