@@ -9,5 +9,5 @@ public interface ICaixaEletronico {
 
     public String reposicaoCedulas(int cedula, int quantidade);
     
-    public String armazenaContaMinima(int minimo);
+    public String armazenaCotaMinima(int minimo);
 }
