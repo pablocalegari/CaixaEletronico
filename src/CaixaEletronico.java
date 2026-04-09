@@ -34,7 +34,7 @@ public class CaixaEletronico implements ICaixaEletronico {
             SaqueService.isSaqueValido(valor);
             if (SaqueService.isSaqueValido == false){
                 catch (){
-                    System.out.println("Invalido: tentou sacar cedulas de valor 1 e 3");
+                    System.out.println("Invalido: tentou sacar cedulas de valor 1 ou 3");
                 }
             }   
             if (User.getSaldo < 0){
