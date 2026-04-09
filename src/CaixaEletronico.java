@@ -32,11 +32,12 @@ public class CaixaEletronico implements ICaixaEletronico {
 
     @Override
     public String sacar(int valor){
+        int saldoAtual = user.getSaldo();
+        int novoSaldo =  saldoAtual - valor;
         try{
             // 09/04 - Rafael: ainda vou testar isso ainda, mas ajeitei pq tinha algumas coisas erradas
             //                 só nao testo agora pq é 2 da manha
             boolean saqueValido = SaqueService.isSaqueValido(valor);
-            int saldoAtual = user.getSaldo();
 
             // verificando se o saque é valido
             if (!saqueValido){
@@ -57,14 +58,10 @@ public class CaixaEletronico implements ICaixaEletronico {
                     cedulaRepositorio[i][1] = quantidadeCedula; // atualiza a quantidade de cedulas no repositorio
                 }
             }
-
-            int novoSaldo =  saldoAtual - valor;
-            user.setSaldo(novoSaldo);
-
         } catch (Exception e){
             System.out.println("Um erro ocorreu: " + e);
         }
-
+        user.setSaldo(novoSaldo);
         return "Saque efetuado com sucesso! Saldo da conta >> " + user.getSaldo();
     }
 
@@ -102,5 +99,6 @@ public class CaixaEletronico implements ICaixaEletronico {
     
     public void main(String[] args) {
 
+        System.out.println(sacar(700));
     }
 }
