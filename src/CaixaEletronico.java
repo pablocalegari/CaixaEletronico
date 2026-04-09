@@ -1,6 +1,6 @@
 import services.ICaixaEletronico;
 import services.SaqueService;
-import models;
+import models.User;
 import java.util.Scanner;
 import java.io.IOException;
 
@@ -18,6 +18,9 @@ public class CaixaEletronico implements ICaixaEletronico {
     // atributo para o metodo armazenaContaMinima | numero de teste, vai mudar dps
     private int minimoSaque = 200;
 
+    // instanciando o usuario para testes, tem que arrumar um jeito de isso poder ser criado dentro do main, e que possa ser usado dentro dos métodos sem passar como argumento
+    User user = new User("Rafael", "1234", 1000, "0001");
+
     @Override
     public String pegaValorTotalDisponivel(){
         int valorSomado = 0;
@@ -30,27 +33,39 @@ public class CaixaEletronico implements ICaixaEletronico {
     @Override
     public String sacar(int valor){
         try{
-            // 08/04 - Rafael: vou testar isso ainda, talvez esteja errado (fiz na aula do angel)
-            SaqueService.isSaqueValido(valor);
-            if (SaqueService.isSaqueValido == false){
-                catch (){
-                    System.out.println("Invalido: tentou sacar cedulas de valor 1 ou 3");
-                }
+            // 09/04 - Rafael: ainda vou testar isso ainda, mas ajeitei pq tinha algumas coisas erradas
+            //                 só nao testo agora pq é 2 da manha
+            boolean saqueValido = SaqueService.isSaqueValido(valor);
+            int saldoAtual = user.getSaldo();
+
+            // verificando se o saque é valido
+            if (!saqueValido){
+                throw new IllegalStateException("Invalido: tentou sacar cedulas de valor invalido");
             }   
-            if (User.getSaldo < 0){
-                catch(){
-                    System.out.println("Invalido: Saldo negativo");
+            if (saldoAtual < valor){
+                throw new IllegalStateException("Invalido: Saldo negativo");
+            }
+
+            for(int i = 0; i < cedulaRepositorio.length; i++){
+                int valorCedula = cedulaRepositorio[i][0];
+                int quantidadeCedula = cedulaRepositorio[i][1];
+
+                // enquanto o valor do saque for maior ou igual ao valor da cedula e houver cedulas disponiveis
+                while (valor >= valorCedula && quantidadeCedula > 0){
+                    valor -= valorCedula; // subtrai o valor da cedula do valor do saque
+                    quantidadeCedula--; // diminui a quantidade de cedulas disponiveis
+                    cedulaRepositorio[i][1] = quantidadeCedula; // atualiza a quantidade de cedulas no repositorio
                 }
             }
-            
-            int novoSaldo = User.getSaldo - valor
-            User.setSaldo(novoSaldo)
-            
+
+            int novoSaldo =  saldoAtual - valor;
+            user.setSaldo(novoSaldo);
+
         } catch (Exception e){
             System.out.println("Um erro ocorreu: " + e);
         }
 
-        return "Saque efetuado com sucesso! Saldo da conta >> " + ;
+        return "Saque efetuado com sucesso! Saldo da conta >> " + user.getSaldo();
     }
 
     @Override
@@ -73,7 +88,7 @@ public class CaixaEletronico implements ICaixaEletronico {
     }
 
     @Override
-    public String armazenaContaMinima(int minimo){
+    public String armazenaCotaMinima(int minimo){
         // verifica se o valor passado é menor que zero
         if (minimo < 0){
             return "Valor minimo de saque não pode ser negativo.";
