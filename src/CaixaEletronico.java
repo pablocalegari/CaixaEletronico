@@ -103,18 +103,4 @@ public class CaixaEletronico implements ICaixaEletronico {
     public void main(String[] args) {
 
     }
-    
-    
-    /*public static void menu() {
-        System.out.println("========= Caixa Eletrônico =========");
-
-        // interface do caixa eletrônico
-        System.out.println("[1] Verificar Saldo");
-        System.out.println("[2] Depositar");
-        System.out.println("[3] Sacar");
-        System.out.println("[4] Transferir");
-        System.out.println("[5] Sair");
-        }
-        */
-        
 }
