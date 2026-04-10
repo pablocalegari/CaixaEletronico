@@ -6,7 +6,6 @@ import java.io.IOException;
 
 
 public class CaixaEletronico implements ICaixaEletronico {
-    // isso aqui vai guardar as quantidades das cedulas
     // primeira coluna é o valor a segunda é a quantidade
     // criado como um atributo da classe para todos os metodos poderem usa-lo sem problema
     private int[][] cedulaRepositorio = {{100, 100},
@@ -34,19 +33,15 @@ public class CaixaEletronico implements ICaixaEletronico {
     public String sacar(int valor){
         int saldoAtual = user.getSaldo();
         int novoSaldo =  saldoAtual - valor;
+
+        if (!SaqueService.isSaqueValido(valor)){
+            return "Invalido: tentou sacar cedulas de valor invalido";
+        }
+        if (saldoAtual < valor){
+            return "Invalido: Saldo negativo";
+        }
+
         try{
-            // 09/04 - Rafael: ainda vou testar isso ainda, mas ajeitei pq tinha algumas coisas erradas
-            //                 só nao testo agora pq é 2 da manha
-            boolean saqueValido = SaqueService.isSaqueValido(valor);
-
-            // verificando se o saque é valido
-            if (!saqueValido){
-                throw new IllegalStateException("Invalido: tentou sacar cedulas de valor invalido");
-            }   
-            if (saldoAtual < valor){
-                throw new IllegalStateException("Invalido: Saldo negativo");
-            }
-
             for(int i = 0; i < cedulaRepositorio.length; i++){
                 int valorCedula = cedulaRepositorio[i][0];
                 int quantidadeCedula = cedulaRepositorio[i][1];
@@ -57,11 +52,12 @@ public class CaixaEletronico implements ICaixaEletronico {
                     quantidadeCedula--; // diminui a quantidade de cedulas disponiveis
                     cedulaRepositorio[i][1] = quantidadeCedula; // atualiza a quantidade de cedulas no repositorio
                 }
+
+                user.setSaldo(novoSaldo);
             }
         } catch (Exception e){
             System.out.println("Um erro ocorreu: " + e);
         }
-        user.setSaldo(novoSaldo);
         return "Saque efetuado com sucesso! Saldo da conta >> " + user.getSaldo();
     }
 
@@ -95,10 +91,9 @@ public class CaixaEletronico implements ICaixaEletronico {
         this.minimoSaque = minimo;
         return "Valor mínimo de saque atualizado para: " + minimo;
     }
-    
-    
+
     public void main(String[] args) {
 
-        System.out.println(sacar(700));
+
     }
 }
