@@ -34,11 +34,14 @@ public class CaixaEletronico implements ICaixaEletronico {
         int saldoAtual = user.getSaldo();
         int novoSaldo =  saldoAtual - valor;
 
+        if (valor < 0){
+            return "Invalido: valor de saque não pode ser negativo";
+        }
         if (!SaqueService.isSaqueValido(valor)){
             return "Invalido: tentou sacar cedulas de valor invalido";
         }
         if (saldoAtual < valor){
-            return "Invalido: Saldo negativo";
+            return "Invalido: Valor de saque maior que saldo da conta";
         }
 
         try{
@@ -93,7 +96,7 @@ public class CaixaEletronico implements ICaixaEletronico {
     }
 
     public void main(String[] args) {
-
+        //System.out.println(sacar());
 
     }
 }
