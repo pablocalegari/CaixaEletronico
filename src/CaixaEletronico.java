@@ -15,7 +15,7 @@ public class CaixaEletronico implements ICaixaEletronico {
                                         {5, 450},
                                         {2, 500}};
     // atributo para o metodo armazenaContaMinima | numero de teste, vai mudar dps
-    private int minimoSaque = 200;
+    private int cotaMinimaAtendimento = 200;
 
     // instanciando o usuario para testes, tem que arrumar um jeito de isso poder ser criado dentro do main, e que possa ser usado dentro dos métodos sem passar como argumento
     User user = new User("Rafael", "1234", 1000, "0001");
@@ -85,14 +85,10 @@ public class CaixaEletronico implements ICaixaEletronico {
 
     @Override
     public String armazenaCotaMinima(int minimo){
-        // verifica se o valor passado é menor que zero
-        if (minimo < 0){
-            return "Valor minimo de saque não pode ser negativo.";
+        if(minimo < this.cotaMinimaAtendimento){
+            return "Caixa Vazio: Chame o Operador";
         }
-
-        // se nao for, atualiza o valor do minimoSaque e retorna uma mensagem de sucesso
-        this.minimoSaque = minimo;
-        return "Valor mínimo de saque atualizado para: " + minimo;
+        return "Cota minima para atendimento: " + this.cotaMinimaAtendimento + " cedulas armazenadas";
     }
 
     public void main(String[] args) {
