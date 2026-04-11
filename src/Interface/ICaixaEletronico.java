@@ -1,4 +1,4 @@
-package services;
+package Interface;
 
 public interface ICaixaEletronico {
     public String pegaValorTotalDisponivel();
