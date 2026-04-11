@@ -1,8 +1,10 @@
+package main;
+
 import Interface.ICaixaEletronico;
+import components.TelaCaixaEletronico;
+import components.Login;
 import services.SaqueService;
 import models.User;
-
-import javax.swing.*;
 
 
 public class CaixaEletronico implements ICaixaEletronico {
@@ -17,6 +19,10 @@ public class CaixaEletronico implements ICaixaEletronico {
     // atributo para o metodo armazenaContaMinima | numero de teste, vai mudar dps
     private int cotaMinimaAtendimento = 200;
     private User user;
+
+    public CaixaEletronico(User user) {
+        this.user = user;
+    }
 
     @Override
     public String pegaValorTotalDisponivel(){
@@ -86,9 +92,9 @@ public class CaixaEletronico implements ICaixaEletronico {
         return "Cota minima para atendimento: " + this.cotaMinimaAtendimento + " cedulas armazenadas";
     }
 
-    public void main(String[] args) {
+    public static void main(String[] args) {
         //System.out.println(sacar());
-        TelaCaixaEletronico gui = new TelaCaixaEletronico();
-        gui.main(args);
+        Login telaLogin = new Login();
+        telaLogin.abrirTelaSetup();
     }
 }
