@@ -1,15 +1,17 @@
+package components;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import main.CaixaEletronico;
 
 
 public class TelaCaixaEletronico extends JFrame {
     private JTextArea display;
-    private CaixaEletronico caixa;
+    private CaixaEletronico caixaEletronico;
 
-    public TelaCaixaEletronico() {
-        caixa = new CaixaEletronico();
-
+    public TelaCaixaEletronico(CaixaEletronico caixa) {
+        caixaEletronico = caixa;
         setTitle("Caixa Eletrônico");
         setSize(400, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -27,7 +29,7 @@ public class TelaCaixaEletronico extends JFrame {
         JButton relatorio = new JButton("Relatório Cédulas");
         JButton total = new JButton("Valor Total");
         JButton reposicao = new JButton("Repor Cédulas");
-        JButton minimo = new JButton("Conta Minima");
+        JButton minimo = new JButton("Cota Minima");
         JButton sair = new JButton("Sair");
         sair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -35,26 +37,26 @@ public class TelaCaixaEletronico extends JFrame {
             }
         });
 
-        // adicionando os metodos da CaixaEletronico para os botoes
+        // adicionando os metodos da main.CaixaEletronico para os botoes
 
-        saque.addActionListener(new ActionListener() {;
+        saque.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String valorSaque = JOptionPane.showInputDialog("Digite o valor do saque:");
-                String resultadoSaque = caixa.sacar(Integer.parseInt(valorSaque));
+                String resultadoSaque = caixaEletronico.sacar(Integer.parseInt(valorSaque));
                 display.setText(resultadoSaque);
             }
         });
 
         relatorio.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String relatorioCedulas = caixa.pegaRelatorioCedulas();
+                String relatorioCedulas = caixaEletronico.pegaRelatorioCedulas();
                 display.setText(relatorioCedulas);
             }
         });
 
         total.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String valorTotal = caixa.pegaValorTotalDisponivel();
+                String valorTotal = caixaEletronico.pegaValorTotalDisponivel();
                 display.setText(valorTotal);
             }
         });
@@ -63,19 +65,20 @@ public class TelaCaixaEletronico extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String cedula = JOptionPane.showInputDialog("Digite o valor da cédula a ser reposta:");
                 String quantidade = JOptionPane.showInputDialog("Digite a quantidade de cédulas a ser reposta:");
-                String resultadoReposicao = caixa.reposicaoCedulas(Integer.parseInt(cedula), Integer.parseInt(quantidade));
+                String resultadoReposicao = caixaEletronico.reposicaoCedulas(Integer.parseInt(cedula), Integer.parseInt(quantidade));
                 display.setText(resultadoReposicao);
             }
         });
 
-        minimo.addActionListener(new ActionListener() {;
+        minimo.addActionListener(new ActionListener() {
+            ;
+
             public void actionPerformed(ActionEvent e) {
                 String minimo = JOptionPane.showInputDialog("Digite a cota mínima para atendimento:");
-                String resultadoMinimo = caixa.armazenaCotaMinima(Integer.parseInt(minimo));
+                String resultadoMinimo = caixaEletronico.armazenaCotaMinima(Integer.parseInt(minimo));
                 display.setText(resultadoMinimo);
             }
         });
-
 
 
         painelBotoes.add(saque);
@@ -88,10 +91,5 @@ public class TelaCaixaEletronico extends JFrame {
         add(painelBotoes, BorderLayout.SOUTH);
 
 
-    }
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            new TelaCaixaEletronico().setVisible(true);
-        });
     }
 }
