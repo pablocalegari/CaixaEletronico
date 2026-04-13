@@ -23,6 +23,7 @@ public class CaixaEletronico implements ICaixaEletronico {
         this.user = user;
     }
 
+    // fazer isso ser apenas para ADMS
     @Override
     public String pegaValorTotalDisponivel(){
         int valorSomado = 0;
@@ -63,6 +64,7 @@ public class CaixaEletronico implements ICaixaEletronico {
         return "Saque efetuado com sucesso! Saldo da conta >> " + user.getSaldo();
     }
 
+    // fazer isso ser apenas para ADMS
     @Override
     public String pegaRelatorioCedulas() {
         // 01/04 - ainda nao testei issai
@@ -83,6 +85,7 @@ public class CaixaEletronico implements ICaixaEletronico {
         return "";
     }
 
+    // fazer isso ser apenas para ADMS
     @Override
     public String armazenaCotaMinima(int minimo){
         if(minimo < this.cotaMinimaAtendimento){
