@@ -26,10 +26,6 @@ public class TelaCaixaEletronico extends JFrame {
         painelBotoes.setLayout(new GridLayout(3, 2, 5, 5)); //espaçamento
 
         JButton saque = new JButton("Efetuar Saque");
-        JButton relatorio = new JButton("Relatório Cédulas");
-        JButton total = new JButton("Valor Total");
-        JButton reposicao = new JButton("Repor Cédulas");
-        JButton minimo = new JButton("Cota Minima");
         JButton sair = new JButton("Sair");
         sair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -57,63 +53,7 @@ public class TelaCaixaEletronico extends JFrame {
             }
         });
 
-        relatorio.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String relatorioCedulas = caixaEletronico.pegaRelatorioCedulas();
-                display.setText(relatorioCedulas);
-            }
-        });
-
-        total.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String valorTotal = caixaEletronico.pegaValorTotalDisponivel();
-                display.setText(valorTotal);
-            }
-        });
-
-        reposicao.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String cedula = JOptionPane.showInputDialog("Digite o valor da cédula a ser reposta:");
-                if (cedula == null) return;
-
-                String quantidade = JOptionPane.showInputDialog("Digite a quantidade de cédulas a ser reposta:");
-                if (quantidade == null) return;
-
-                try {
-                    String resultadoReposicao = caixaEletronico.reposicaoCedulas(Integer.parseInt(cedula), Integer.parseInt(quantidade));
-                    display.setText(resultadoReposicao);
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Valores de reposição precisam ser numericos!");
-                }
-
-            }
-        });
-
-        minimo.addActionListener(new ActionListener() {
-            // chat pra que serve esse ; na proxima linha to com medo de tirar e quebrar o código
-            ;
-
-            public void actionPerformed(ActionEvent e) {
-                String valorMinimo = JOptionPane.showInputDialog("Digite a cota mínima para atendimento:");
-                //faz com que não de erro ao clicar no cancelar
-                if (valorMinimo == null) return;
-
-                //Aparece mensagem de erro se digitar algo que não seja numero
-                try {
-                    String resultadoMinimo = caixaEletronico.armazenaCotaMinima(Integer.parseInt(valorMinimo));
-                    display.setText(resultadoMinimo);
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "A cota minima deve ser numerica!");
-                }
-            }
-        });
-
-
         painelBotoes.add(saque);
-        painelBotoes.add(relatorio);
-        painelBotoes.add(total);
-        painelBotoes.add(reposicao);
-        painelBotoes.add(minimo);
         painelBotoes.add(sair);
 
         add(painelBotoes, BorderLayout.SOUTH);
