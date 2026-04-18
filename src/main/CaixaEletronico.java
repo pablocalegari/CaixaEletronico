@@ -48,20 +48,27 @@ public class CaixaEletronico implements ICaixaEletronico {
             return "Invalido: Valor de saque maior que saldo da conta";
         }
 
+        String notasUsadas = "Notas entregues:\n"; //vai adicionando as notas usadas
+        int valorRestante = valor; //copia o valor para não perder o valor original
+
         for(int i = 0; i < cedulaRepositorio.length; i++){
             int valorCedula = cedulaRepositorio[i][0];
             int quantidadeCedula = cedulaRepositorio[i][1];
+            int notasUsadasSaque = 0; // conta quantas notas foram usadas
 
             // enquanto o valor do saque for maior ou igual ao valor da cedula e houver cedulas disponiveis
-            while (valor >= valorCedula && quantidadeCedula > 0){
-                valor -= valorCedula; // subtrai o valor da cedula do valor do saque
+            while (valorRestante >= valorCedula && quantidadeCedula > 0){
+                valorRestante -= valorCedula; // subtrai o valor da cedula do valor do saque
                 quantidadeCedula--; // diminui a quantidade de cedulas disponiveis
+                notasUsadasSaque++; // soma a quantiade de notas usadas
                 cedulaRepositorio[i][1] = quantidadeCedula; // atualiza a quantidade de cedulas no repositorio
             }
+                //adiciona as notas usadas no print
+                notasUsadas += "Nota de R$" + valorCedula + ": " + notasUsadasSaque + "\n";
+            }
             user.setSaldo(novoSaldo);
-        }
 
-        return "Saque efetuado com sucesso! Saldo da conta >> " + user.getSaldo();
+        return "Saque efetuado com sucesso!\n" + notasUsadas + "Saldo da conta >> " + user.getSaldo();
     }
 
     // fazer isso ser apenas para ADMS
