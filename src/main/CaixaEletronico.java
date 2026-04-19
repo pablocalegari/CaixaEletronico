@@ -68,8 +68,10 @@ public class CaixaEletronico implements ICaixaEletronico {
                 notasUsadasSaque++; // soma a quantiade de notas usadas
                 cedulaRepositorio[i][1] = quantidadeCedula; // atualiza a quantidade de cedulas no repositorio
             }
-            //adiciona as notas usadas no print
-            notasUsadas += "Nota de R$" + valorCedula + ": " + notasUsadasSaque + "\n";
+            if (notasUsadasSaque > 0) { //faz com que só adicione notas que foram usadas no print
+                notasUsadas += "Nota de R$" + valorCedula + ": " + notasUsadasSaque + "\n";
+            }
+
         }
         user.setSaldo(novoSaldo);
 
