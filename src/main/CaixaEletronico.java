@@ -43,7 +43,7 @@ public class CaixaEletronico implements ICaixaEletronico {
         int saldoAtual = user.getSaldo();
         int novoSaldo = saldoAtual - valor;
 
-        if (valor < 0) {
+        if (valor <= 0) {
             return "Invalido: valor de saque não pode ser negativo";
         }
         if (!SaqueService.isSaqueValido(valor)) {
