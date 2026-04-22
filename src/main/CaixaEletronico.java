@@ -59,12 +59,11 @@ public class CaixaEletronico implements ICaixaEletronico {
 
         String notasUsadas = "Notas entregues:\n"; //vai adicionando as notas usadas
         int valorRestante = valor; //copia o valor para não perder o valor original
-        int valorCedula = cedulaRepositorio[i][0];
-        int quantidadeCedula = cedulaRepositorio[i][1];
-        int notasUsadasSaque;
         
         for (int i = 0; i < cedulaRepositorio.length; i++) {
-            notasUsadasSaque = 0; // conta quantas notas foram usadas
+            int valorCedula = cedulaRepositorio[i][0];
+            int quantidadeCedula = cedulaRepositorio[i][1];
+            int notasUsadasSaque = 0; // conta quantas notas foram usadas
 
             // enquanto o valor do saque for maior ou igual ao valor da cedula e houver cedulas disponiveis
             while (valorRestante >= valorCedula && quantidadeCedula > 0) {
@@ -76,12 +75,12 @@ public class CaixaEletronico implements ICaixaEletronico {
             if (notasUsadasSaque > 0) { //faz com que só adicione notas que foram usadas no print
                 notasUsadas += "Nota de R$" + valorCedula + ": " + notasUsadasSaque + "\n";
             }
-
+            if (notasUsadasSaque > 30){
+            return "Invalido: excedeu numero maximo de cedulas para saque";
+            }
         }
 
-        if (notasUsadasSaque > 30){
-            return "Invalido: excedeu numero maximo de cedulas para saque"
-        }
+
         user.setSaldo(novoSaldo);
 
 
