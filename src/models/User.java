@@ -1,18 +1,14 @@
 package models;
 
 public class User {
-    private String name;
-    private String senha;
-    private int saldo;
+    private String name = "Usuario Teste";
+    private String senha = "123456";
+    private int saldo = 10000;
 
     // 08/04 rafael: talvez eu tire essa agencia depois
-    private String agencia;
+    private String agencia = "0001";
 
-    public User(String name, String senha, int saldo, String agencia){
-        this.name = name;
-        this.senha = senha;
-        this.saldo = saldo;
-        this.agencia = agencia;
+    public User(){
     }
 
     public int getSaldo(){
