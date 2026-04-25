@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import main.CaixaEletronico;
+
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,14 +34,17 @@ public class TelaCaixaEletronico extends JFrame {
         JButton logOut = new JButton("Log Out");
         sair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                HashMap<Integer, String> extrato = caixaEletronico.getExtratoCliente();
+                HashMap<String, String> extrato = caixaEletronico.getExtratoCliente();
                 StringBuilder textoExtrato = new StringBuilder();
                 textoExtrato.append("Extrato\n");
 
+                // verifica se teve alguma ação
                 if (extrato == null || extrato.isEmpty()) {
                     textoExtrato.append("Nenhuma operação registrada.");
                 } else {
-                    for (Map.Entry<Integer, String> entry : extrato.entrySet()) {
+                    // converte o hashmap para um set para poder fazer o for dentro dele
+                    for (Map.Entry<String, String> entry : extrato.entrySet()) {
+                        // junta numa string a chave do hashmap (getKey()) e o valor da chave (getValue()) divididos por um ":"
                         textoExtrato.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
                     }
                 }
@@ -50,8 +55,8 @@ public class TelaCaixaEletronico extends JFrame {
                 dialog.setModal(false);
                 dialog.setVisible(true);
 
-                // Inicia o contador de 2 segundos (2000ms) para fechar a aplicação
-                Timer timer = new Timer(2000, evt -> System.exit(0));
+                // Inicia o contador de 5 segundos (5000ms) para fechar a tela
+                Timer timer = new Timer(5000, evt -> System.exit(0));
                 timer.setRepeats(false);
                 timer.start();
             }

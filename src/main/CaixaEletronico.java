@@ -6,6 +6,9 @@ import models.Admin;
 import services.SaqueService;
 import models.User;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -22,8 +25,8 @@ public class CaixaEletronico implements ICaixaEletronico {
     private int cotaMinimaAtendimento = 200;
     private User user;
     private Admin adm;
-    private final HashMap<Integer, String> extratoCliente = new HashMap<Integer, String>();
-    private final HashMap<Integer, String> extratoAdm = new HashMap<Integer, String>();
+    private final HashMap<String, String> extratoCliente = new HashMap<String, String>();
+    private final HashMap<String, String> extratoAdm = new HashMap<String, String>();
 
     public CaixaEletronico(User user) {
         this.user = user;
@@ -32,11 +35,11 @@ public class CaixaEletronico implements ICaixaEletronico {
         this.adm = adm;
     }
 
-    public HashMap<Integer, String> getExtratoCliente() {
+    public HashMap<String, String> getExtratoCliente() {
         return extratoCliente;
     }
 
-    public HashMap<Integer, String> getExtratoAdm() {
+    public HashMap<String, String> getExtratoAdm() {
         return extratoAdm;
     }
 
@@ -48,7 +51,8 @@ public class CaixaEletronico implements ICaixaEletronico {
             valorSomado += cedulaRepositorio[i][0] * cedulaRepositorio[i][1];
         }
         String extrato = "Verificou valor total disponível no caixa";
-        extratoAdm.put(extratoAdm.size() + 1, extrato);
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        extratoAdm.put(formatar.format(LocalDateTime.now()), extrato);
         return "Valor total disponível: " + valorSomado;
     }
 
@@ -97,7 +101,8 @@ public class CaixaEletronico implements ICaixaEletronico {
             }
         }
         String extrato = "Sacou " + "R$" + valor;
-        extratoCliente.put(extratoCliente.size() + 1, extrato);
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        extratoCliente.put(formatar.format(LocalDateTime.now()), extrato);
 
         user.setSaldo(novoSaldo);
         return "Saque efetuado com sucesso!\n" + notasUsadas + "Saldo da conta >> " + user.getSaldo();
@@ -136,7 +141,8 @@ public class CaixaEletronico implements ICaixaEletronico {
             relatorio.append(linha);
         }
         String extrato = "Verificou relátorio de cédulas";
-        extratoAdm.put(extratoAdm.size() + 1, extrato);
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        extratoAdm.put(formatar.format(LocalDateTime.now()), extrato);
         return relatorio.toString();
     }
 
@@ -148,7 +154,8 @@ public class CaixaEletronico implements ICaixaEletronico {
             }
         }
         String extrato = "Repós " + quantidade + " cedulas de R$" + cedula;
-        extratoAdm.put(extratoAdm.size() + 1, extrato);
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        extratoAdm.put(formatar.format(LocalDateTime.now()), extrato);
         return "Reposição realizada: " + quantidade + " cedulas de R$" + cedula + " adicionadas.";
     }
 
