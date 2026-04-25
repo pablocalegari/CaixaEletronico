@@ -6,6 +6,11 @@ import models.Admin;
 import services.SaqueService;
 import models.User;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
+
 
 public class CaixaEletronico implements ICaixaEletronico {
     // primeira coluna é o valor a segunda é a quantidade
@@ -20,12 +25,22 @@ public class CaixaEletronico implements ICaixaEletronico {
     private int cotaMinimaAtendimento = 200;
     private User user;
     private Admin adm;
+    private final HashMap<String, String> extratoCliente = new HashMap<String, String>();
+    private final HashMap<String, String> extratoAdm = new HashMap<String, String>();
 
     public CaixaEletronico(User user) {
         this.user = user;
     }
     public CaixaEletronico(Admin adm){
         this.adm = adm;
+    }
+
+    public HashMap<String, String> getExtratoCliente() {
+        return extratoCliente;
+    }
+
+    public HashMap<String, String> getExtratoAdm() {
+        return extratoAdm;
     }
 
     // fazer isso ser apenas para ADMS
@@ -35,6 +50,9 @@ public class CaixaEletronico implements ICaixaEletronico {
         for (int i = 0; i < cedulaRepositorio.length; i++){
             valorSomado += cedulaRepositorio[i][0] * cedulaRepositorio[i][1];
         }
+        String extrato = "Verificou valor total disponível no caixa";
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        extratoAdm.put(formatar.format(LocalDateTime.now()), extrato);
         return "Valor total disponível: " + valorSomado;
     }
 
@@ -82,9 +100,11 @@ public class CaixaEletronico implements ICaixaEletronico {
                 notasUsadas += "Nota de R$" + cedulaRepositorio[i][0] + ": " + notasUsadasSaque[i] + "\n";
             }
         }
+        String extrato = "Sacou " + "R$" + valor;
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        extratoCliente.put(formatar.format(LocalDateTime.now()), extrato);
 
         user.setSaldo(novoSaldo);
-
         return "Saque efetuado com sucesso!\n" + notasUsadas + "Saldo da conta >> " + user.getSaldo();
     }
     // Metodo auxiliar: tenta resolver o saque com backtracking
@@ -120,16 +140,27 @@ public class CaixaEletronico implements ICaixaEletronico {
             String linha = "Valor Cedula: " + cedulaRepositorio[i][0] + " | Quantidade: " + cedulaRepositorio[i][1] + "\n";
             relatorio.append(linha);
         }
+        String extrato = "Verificou relátorio de cédulas";
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        extratoAdm.put(formatar.format(LocalDateTime.now()), extrato);
         return relatorio.toString();
     }
 
     @Override
     public String reposicaoCedulas(int cedula, int quantidade){
-
-        return "";
+        for (int i = 0; i < cedulaRepositorio.length; i++) {
+            if (cedulaRepositorio[i][0] == cedula) {
+                cedulaRepositorio[i][1] += quantidade;
+            }
+        }
+        String extrato = "Repós " + quantidade + " cedulas de R$" + cedula;
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        extratoAdm.put(formatar.format(LocalDateTime.now()), extrato);
+        return "Reposição realizada: " + quantidade + " cedulas de R$" + cedula + " adicionadas.";
     }
 
     // fazer isso ser apenas para ADMS
+    // 25/04 (rafael) - Reverificar isso no blackboard pra ver se ta fazendo oq o professor quer
     @Override
     public String armazenaCotaMinima(int minimo){
         if(minimo < this.cotaMinimaAtendimento){

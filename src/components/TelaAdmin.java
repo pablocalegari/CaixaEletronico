@@ -5,6 +5,10 @@ import java.awt.*;
 import java.awt.event.*;
 import main.CaixaEletronico;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class TelaAdmin extends JFrame {
     private JTextArea display;
@@ -25,7 +29,8 @@ public class TelaAdmin extends JFrame {
         JButton total = new JButton("Valor Total");
         JButton reposicao = new JButton("Repor Cédulas");
         JButton minimo = new JButton("Cota Minima");
-        JButton sair = new JButton("Sair");
+        JButton sair = new JButton("Fechar");
+        JButton logOut = new JButton("Log Out");
 
         JPanel painelBotoes = new JPanel();
         painelBotoes.setLayout(new BorderLayout(0, 5));
@@ -40,12 +45,34 @@ public class TelaAdmin extends JFrame {
 
         // juntando os paineis na parte de baixo da tela
         painelBotoes.add(painelAcoes, BorderLayout.NORTH);
-        painelBotoes.add(sair, BorderLayout.SOUTH);
+        painelBotoes.add(sair, BorderLayout.CENTER);
+        painelBotoes.add(logOut, BorderLayout.SOUTH);
         add(painelBotoes, BorderLayout.SOUTH);
 
         sair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                HashMap<String, String> extrato = caixaEletronico.getExtratoAdm();
+                StringBuilder textoExtrato = new StringBuilder();
+                textoExtrato.append("Extrato\n");
+
+                if (extrato == null || extrato.isEmpty()) {
+                    textoExtrato.append("Nenhuma operação registrada.");
+                } else {
+                    for (Map.Entry<String, String> entry : extrato.entrySet()) {
+                        textoExtrato.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+                    }
+                }
+
+                // Exibe o painel sem bloquear o resto do código (Modal = false)
+                JOptionPane pane = new JOptionPane(textoExtrato.toString(), JOptionPane.INFORMATION_MESSAGE);
+                JDialog dialog = pane.createDialog("Encerrando Sessão...");
+                dialog.setModal(false);
+                dialog.setVisible(true);
+
+                // Inicia o contador de 5 segundos (5000ms) para fechar a tela
+                Timer timer = new Timer(5000, evt -> System.exit(0));
+                timer.setRepeats(false);
+                timer.start();
             }
         });
 
@@ -98,6 +125,13 @@ public class TelaAdmin extends JFrame {
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "A cota minima deve ser numerica!");
                 }
+            }
+        });
+
+        logOut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // fecha a tela atual
+                Login.abrirTelaSetup(); // volta para a tela de login
             }
         });
     }
