@@ -6,6 +6,8 @@ import models.Admin;
 import services.SaqueService;
 import models.User;
 
+import java.util.HashMap;
+
 
 public class CaixaEletronico implements ICaixaEletronico {
     // primeira coluna é o valor a segunda é a quantidade
@@ -20,12 +22,22 @@ public class CaixaEletronico implements ICaixaEletronico {
     private int cotaMinimaAtendimento = 200;
     private User user;
     private Admin adm;
+    private final HashMap<Integer, String> extratoCliente = new HashMap<Integer, String>();
+    private final HashMap<Integer, String> extratoAdm = new HashMap<Integer, String>();
 
     public CaixaEletronico(User user) {
         this.user = user;
     }
     public CaixaEletronico(Admin adm){
         this.adm = adm;
+    }
+
+    public HashMap<Integer, String> getExtratoCliente() {
+        return extratoCliente;
+    }
+
+    public HashMap<Integer, String> getExtratoAdm() {
+        return extratoAdm;
     }
 
     // fazer isso ser apenas para ADMS
@@ -35,6 +47,8 @@ public class CaixaEletronico implements ICaixaEletronico {
         for (int i = 0; i < cedulaRepositorio.length; i++){
             valorSomado += cedulaRepositorio[i][0] * cedulaRepositorio[i][1];
         }
+        String extrato = "Verificou valor total disponível no caixa";
+        extratoAdm.put(extratoAdm.size() + 1, extrato);
         return "Valor total disponível: " + valorSomado;
     }
 
@@ -82,9 +96,10 @@ public class CaixaEletronico implements ICaixaEletronico {
                 notasUsadas += "Nota de R$" + cedulaRepositorio[i][0] + ": " + notasUsadasSaque[i] + "\n";
             }
         }
+        String extrato = "Sacou " + "R$" + valor;
+        extratoCliente.put(extratoCliente.size() + 1, extrato);
 
         user.setSaldo(novoSaldo);
-
         return "Saque efetuado com sucesso!\n" + notasUsadas + "Saldo da conta >> " + user.getSaldo();
     }
     // Metodo auxiliar: tenta resolver o saque com backtracking
@@ -120,6 +135,8 @@ public class CaixaEletronico implements ICaixaEletronico {
             String linha = "Valor Cedula: " + cedulaRepositorio[i][0] + " | Quantidade: " + cedulaRepositorio[i][1] + "\n";
             relatorio.append(linha);
         }
+        String extrato = "Verificou relátorio de cédulas";
+        extratoAdm.put(extratoAdm.size() + 1, extrato);
         return relatorio.toString();
     }
 
@@ -130,6 +147,8 @@ public class CaixaEletronico implements ICaixaEletronico {
                 cedulaRepositorio[i][1] += quantidade;
             }
         }
+        String extrato = "Repós " + quantidade + " cedulas de R$" + cedula;
+        extratoAdm.put(extratoAdm.size() + 1, extrato);
         return "Reposição realizada: " + quantidade + " cedulas de R$" + cedula + " adicionadas.";
     }
 

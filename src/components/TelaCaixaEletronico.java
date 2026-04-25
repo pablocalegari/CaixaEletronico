@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import main.CaixaEletronico;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class TelaCaixaEletronico extends JFrame {
@@ -30,7 +32,28 @@ public class TelaCaixaEletronico extends JFrame {
         JButton logOut = new JButton("Log Out");
         sair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                HashMap<Integer, String> extrato = caixaEletronico.getExtratoCliente();
+                StringBuilder textoExtrato = new StringBuilder();
+                textoExtrato.append("Extrato\n");
+
+                if (extrato == null || extrato.isEmpty()) {
+                    textoExtrato.append("Nenhuma operação registrada.");
+                } else {
+                    for (Map.Entry<Integer, String> entry : extrato.entrySet()) {
+                        textoExtrato.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+                    }
+                }
+
+                // Exibe o painel sem bloquear o resto do código (Modal = false)
+                JOptionPane pane = new JOptionPane(textoExtrato.toString(), JOptionPane.INFORMATION_MESSAGE);
+                JDialog dialog = pane.createDialog("Encerrando Sessão...");
+                dialog.setModal(false);
+                dialog.setVisible(true);
+
+                // Inicia o contador de 2 segundos (2000ms) para fechar a aplicação
+                Timer timer = new Timer(2000, evt -> System.exit(0));
+                timer.setRepeats(false);
+                timer.start();
             }
         });
 
