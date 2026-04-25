@@ -18,32 +18,12 @@ public class Login {
         // 18/04 - Rafael
         // adicionando paineis para organizar onde ficam os campos de info
         // esses paineis sao apenas sessoes separadas, o Grid era uma sessao só e ficava ruim para editar o layout da tela
-        JPanel painelCampos = new JPanel(new GridLayout(4, 2, 10, 10));
-        painelCampos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        //JPanel painelCampos = new JPanel(new GridLayout(1, 2, 10, 10));
+        //painelCampos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel labelNome = new JLabel(" Nome:");
-        JTextField campoNome = new JTextField();
-
-        JLabel labelSenha = new JLabel(" Senha:");
-        JPasswordField campoSenha = new JPasswordField();
-
-        JLabel labelSaldo = new JLabel(" Saldo Inicial (R$):");
-        JTextField campoSaldo = new JTextField();
-
-        JLabel labelAgencia = new JLabel(" Agência:");
-        JTextField campoAgencia = new JTextField();
-
-        painelCampos.add(labelNome);
-        painelCampos.add(campoNome);
-        painelCampos.add(labelSenha);
-        painelCampos.add(campoSenha);
-        painelCampos.add(labelSaldo);
-        painelCampos.add(campoSaldo);
-        painelCampos.add(labelAgencia);
-        painelCampos.add(campoAgencia);
 
         // painel dos campos
-        JPanel painelBotoes = new JPanel(new GridLayout(2, 1, 0, 5));
+        JPanel painelBotoes = new JPanel(new GridLayout(1, 2, 0, 5));
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 
         JButton btnConfirmar = new JButton("Entrar como Usuario");
@@ -53,8 +33,8 @@ public class Login {
         painelBotoes.add(btnLogInAdm);
 
         // organiza ambos paineis, deixando o dos campos de info em cima e o de botao em baixo
-        telaSetup.add(painelCampos, BorderLayout.CENTER);
-        telaSetup.add(painelBotoes, BorderLayout.SOUTH);
+        //telaSetup.add(painelCampos, BorderLayout.CENTER);
+        telaSetup.add(painelBotoes, BorderLayout.CENTER);
 
         btnLogInAdm.addActionListener(e -> {
             abrirTelaLoginAdmin(telaSetup);
@@ -63,20 +43,8 @@ public class Login {
         // logica para log in como usuario comum
         btnConfirmar.addActionListener(e -> {
             try {
-                String nome = campoNome.getText();
-                String senha = new String(campoSenha.getPassword());
-                String agencia = campoAgencia.getText();
-                String saldoTexto = campoSaldo.getText();
-
-                if(nome.isEmpty() || senha.isEmpty() || agencia.isEmpty() || saldoTexto.isEmpty()) {
-                    JOptionPane.showMessageDialog(telaSetup, "Preencha todos os campos!");
-                    return;
-                }
-
-                int saldoInicial = Integer.parseInt(saldoTexto);
-
                 // 1. Cria o usuário com os dados da tela
-                User usuario = new User(nome, senha, saldoInicial, agencia);
+                User usuario = new User("Usuario Teste", "123456", 10000, "0001");
 
                 // 2. Cria o caixa com esse usuário
                 CaixaEletronico caixa = new CaixaEletronico(usuario);
