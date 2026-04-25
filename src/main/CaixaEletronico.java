@@ -11,11 +11,11 @@ public class CaixaEletronico implements ICaixaEletronico {
     // primeira coluna é o valor a segunda é a quantidade
     // criado como um atributo da classe para todos os metodos poderem usa-lo sem problema
     private int[][] cedulaRepositorio = {{100, 100},
-                                        {50, 200},
-                                        {20, 300},
-                                        {10, 350},
-                                        {5, 450},
-                                        {2, 500}};
+            {50, 200},
+            {20, 300},
+            {10, 350},
+            {5, 450},
+            {2, 500}};
     // atributo para o metodo armazenaContaMinima | numero de teste, vai mudar dps
     private int cotaMinimaAtendimento = 200;
     private User user;
@@ -43,7 +43,7 @@ public class CaixaEletronico implements ICaixaEletronico {
         int saldoAtual = user.getSaldo();
         int novoSaldo = saldoAtual - valor;
 
-        if (valor < 0) {
+        if (valor <= 0) {
             return "Invalido: valor de saque não pode ser negativo";
         }
         if (!SaqueService.isSaqueValido(valor)) {
@@ -53,30 +53,59 @@ public class CaixaEletronico implements ICaixaEletronico {
             return "Invalido: Valor de saque maior que saldo da conta";
         }
 
-        String notasUsadas = "Notas entregues:\n"; //vai adicionando as notas usadas
-        int valorRestante = valor; //copia o valor para não perder o valor original
-
+        // Trabalha em cópia para não alterar o repositório caso o saque falhe
+        int[] quantidades = new int[cedulaRepositorio.length];
         for (int i = 0; i < cedulaRepositorio.length; i++) {
-            int valorCedula = cedulaRepositorio[i][0];
-            int quantidadeCedula = cedulaRepositorio[i][1];
-            int notasUsadasSaque = 0; // conta quantas notas foram usadas
-
-            // enquanto o valor do saque for maior ou igual ao valor da cedula e houver cedulas disponiveis
-            while (valorRestante >= valorCedula && quantidadeCedula > 0) {
-                valorRestante -= valorCedula; // subtrai o valor da cedula do valor do saque
-                quantidadeCedula--; // diminui a quantidade de cedulas disponiveis
-                notasUsadasSaque++; // soma a quantiade de notas usadas
-                cedulaRepositorio[i][1] = quantidadeCedula; // atualiza a quantidade de cedulas no repositorio
-            }
-            if (notasUsadasSaque > 0) { //faz com que só adicione notas que foram usadas no print
-                notasUsadas += "Nota de R$" + valorCedula + ": " + notasUsadasSaque + "\n";
-            }
-
+            quantidades[i] = cedulaRepositorio[i][1];
         }
+
+        int[] notasUsadasSaque = new int[cedulaRepositorio.length]; // conta quantas notas foram usadas
+        int valorRestante = sacarRecursivo(valor, 0, quantidades, notasUsadasSaque);
+
+        if (valorRestante != 0) {
+            return "Invalido: não é possível realizar o saque com as cédulas disponíveis";
+        }
+
+        // Verifica limite de notas antes de confirmar o saque
+        int totalNotas = 0;
+        for (int n : notasUsadasSaque) totalNotas += n;
+        if (totalNotas > 30) {
+            return "Invalido: excedeu numero maximo de cedulas para saque";
+        }
+
+        String notasUsadas = "Notas entregues:\n"; //vai adicionando as notas usadas
+
+        //aplica as mudanças no repositório real e monta o resultado
+        for (int i = 0; i < cedulaRepositorio.length; i++) {
+            cedulaRepositorio[i][1] = quantidades[i]; // atualiza a quantidade de cedulas no repositorio
+            if (notasUsadasSaque[i] > 0) { //faz com que só adicione notas que foram usadas no print
+                notasUsadas += "Nota de R$" + cedulaRepositorio[i][0] + ": " + notasUsadasSaque[i] + "\n";
+            }
+        }
+
         user.setSaldo(novoSaldo);
 
-
         return "Saque efetuado com sucesso!\n" + notasUsadas + "Saldo da conta >> " + user.getSaldo();
+    }
+    // Metodo auxiliar: tenta resolver o saque com backtracking
+    // Vai tentando cada cedula até chegar a 0 usando todas cedulas possiveis
+    private int sacarRecursivo(int valorRestante, int indice, int[] quantidades, int[] notasUsadas) {
+        if (valorRestante == 0 || indice >= cedulaRepositorio.length) return valorRestante;
+
+        int valorCedula = cedulaRepositorio[indice][0];
+        int maxUsavel = Math.min(valorRestante / valorCedula, quantidades[indice]);
+
+        // tenta chegar até 0 usando o backtracking
+        for (int qtd = maxUsavel; qtd >= 0; qtd--) {
+            quantidades[indice] -= qtd;
+            notasUsadas[indice] = qtd;
+            int resultado = sacarRecursivo(valorRestante - qtd * valorCedula, indice + 1, quantidades, notasUsadas);
+            if (resultado == 0) return 0; // se conseguir resolver finaliza
+            quantidades[indice] += qtd; // desfaz e tenta com menos
+        }
+
+        notasUsadas[indice] = 0;
+        return valorRestante; // não achou solução por este caminho
     }
 
     // fazer isso ser apenas para ADMS
