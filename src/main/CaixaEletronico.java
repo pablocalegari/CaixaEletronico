@@ -125,11 +125,16 @@ public class CaixaEletronico implements ICaixaEletronico {
 
     @Override
     public String reposicaoCedulas(int cedula, int quantidade){
-
-        return "";
+        for (int i = 0; i < cedulaRepositorio.length; i++) {
+            if (cedulaRepositorio[i][0] == cedula) {
+                cedulaRepositorio[i][1] += quantidade;
+            }
+        }
+        return "Reposição realizada: " + quantidade + " cedulas de R$" + cedula + " adicionadas.";
     }
 
     // fazer isso ser apenas para ADMS
+    // 25/04 (rafael) - Reverificar isso no blackboard pra ver se ta fazendo oq o professor quer
     @Override
     public String armazenaCotaMinima(int minimo){
         if(minimo < this.cotaMinimaAtendimento){
