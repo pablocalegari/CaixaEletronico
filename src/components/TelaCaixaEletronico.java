@@ -23,10 +23,11 @@ public class TelaCaixaEletronico extends JFrame {
         add(new JScrollPane(display), BorderLayout.CENTER);
 
         JPanel painelBotoes = new JPanel();
-        painelBotoes.setLayout(new GridLayout(2, 2, 5, 5)); //espaçamento
+        painelBotoes.setLayout(new GridLayout(3, 2, 5, 5)); //espaçamento
 
         JButton saque = new JButton("Efetuar Saque");
-        JButton sair = new JButton("Sair");
+        JButton sair = new JButton("Fechar");
+        JButton logOut = new JButton("Log Out");
         sair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
@@ -53,8 +54,16 @@ public class TelaCaixaEletronico extends JFrame {
             }
         });
 
+        logOut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // fecha a tela atual
+                Login.abrirTelaSetup(); // volta para a tela de login
+            }
+        });
+
         painelBotoes.add(saque);
         painelBotoes.add(sair);
+        painelBotoes.add(logOut);
 
         add(painelBotoes, BorderLayout.SOUTH);
 

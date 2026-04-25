@@ -25,7 +25,8 @@ public class TelaAdmin extends JFrame {
         JButton total = new JButton("Valor Total");
         JButton reposicao = new JButton("Repor Cédulas");
         JButton minimo = new JButton("Cota Minima");
-        JButton sair = new JButton("Sair");
+        JButton sair = new JButton("Fechar");
+        JButton logOut = new JButton("Log Out");
 
         JPanel painelBotoes = new JPanel();
         painelBotoes.setLayout(new BorderLayout(0, 5));
@@ -40,7 +41,8 @@ public class TelaAdmin extends JFrame {
 
         // juntando os paineis na parte de baixo da tela
         painelBotoes.add(painelAcoes, BorderLayout.NORTH);
-        painelBotoes.add(sair, BorderLayout.SOUTH);
+        painelBotoes.add(sair, BorderLayout.CENTER);
+        painelBotoes.add(logOut, BorderLayout.SOUTH);
         add(painelBotoes, BorderLayout.SOUTH);
 
         sair.addActionListener(new ActionListener() {
@@ -98,6 +100,13 @@ public class TelaAdmin extends JFrame {
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "A cota minima deve ser numerica!");
                 }
+            }
+        });
+
+        logOut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // fecha a tela atual
+                Login.abrirTelaSetup(); // volta para a tela de login
             }
         });
     }
