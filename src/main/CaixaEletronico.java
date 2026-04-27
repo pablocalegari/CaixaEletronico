@@ -166,6 +166,10 @@ public class CaixaEletronico implements ICaixaEletronico {
         if(minimo < this.cotaMinimaAtendimento){
             return "Caixa Vazio: Chame o Operador";
         }
+        // (27/04) Rafael - adicionando método no extrato, ainda tenho que ver se ele faz o que é pra fazer
+        String extrato = "Verificou cota mínima de operaçâo do caixa";
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        extratoAdm.put(formatar.format(LocalDateTime.now()), extrato);
         return "Cota minima para atendimento: " + this.cotaMinimaAtendimento + " cedulas armazenadas";
     }
 
