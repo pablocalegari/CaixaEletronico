@@ -70,6 +70,8 @@ public class CaixaEletronico implements ICaixaEletronico {
         if (saldoAtual < valor) {
             return "Invalido: Valor de saque maior que saldo da conta";
         }
+        // verificando se tem cedulas no caixa pra fazer a operaçao
+        armazenaCotaMinima(cotaMinimaAtendimento);
 
         // Trabalha em cópia para não alterar o repositório caso o saque falhe
         int[] quantidades = new int[cedulaRepositorio.length];
@@ -163,14 +165,19 @@ public class CaixaEletronico implements ICaixaEletronico {
     // 25/04 (rafael) - Reverificar isso no blackboard pra ver se ta fazendo oq o professor quer
     @Override
     public String armazenaCotaMinima(int minimo){
-        if(minimo < this.cotaMinimaAtendimento){
-            return "Caixa Vazio: Chame o Operador";
+        // verifique o montante das cedulas e compare com o minimo
+        // se o montante for menor que o minimo, nao deixar sacar nadinha
+        int quantidadeCedulasCaixa = 0;
+        for (int i = 0; i < cedulaRepositorio.length; i++) {
+            quantidadeCedulasCaixa = cedulaRepositorio[i][1];
         }
-        // (27/04) Rafael - adicionando método no extrato, ainda tenho que ver se ele faz o que é pra fazer
-        String extrato = "Verificou cota mínima de operaçâo do caixa";
-        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        extratoAdm.put(formatar.format(LocalDateTime.now()), extrato);
-        return "Cota minima para atendimento: " + this.cotaMinimaAtendimento + " cedulas armazenadas";
+        if (quantidadeCedulasCaixa > minimo) {
+            return "Validado";
+        }
+//        String extrato = "Verificou cota mínima de operaçâo do caixa";
+//        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//        extratoAdm.put(formatar.format(LocalDateTime.now()), extrato);
+        return "Caixa Vazio: Chame o Operador";
     }
 
     public static void main(String[] args) {
