@@ -169,7 +169,7 @@ public class CaixaEletronico implements ICaixaEletronico {
         // se o montante for menor que o minimo, nao deixar sacar nadinha
         int quantidadeCedulasCaixa = 0;
         for (int i = 0; i < cedulaRepositorio.length; i++) {
-            quantidadeCedulasCaixa = cedulaRepositorio[i][1];
+            quantidadeCedulasCaixa += cedulaRepositorio[i][1];
         }
         if (quantidadeCedulasCaixa > minimo) {
             return "Validado";
