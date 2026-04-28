@@ -91,21 +91,39 @@ public class TelaAdmin extends JFrame {
             }
         });
 
-        reposicao.addActionListener(new ActionListener() {
+reposicao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String cedula = JOptionPane.showInputDialog("Digite o valor da cédula a ser reposta:");
+
+                Integer[] cedulas = {2, 5, 10, 20, 50, 100};
+
+                Integer cedula = (Integer) JOptionPane.showInputDialog(
+                        null,
+                        "Selecione o valor da cédula:",
+                        "Reposição",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        cedulas,
+                        cedulas[0]
+                );
+
                 if (cedula == null) return;
 
-                String quantidade = JOptionPane.showInputDialog("Digite a quantidade de cédulas a ser reposta:");
-                if (quantidade == null) return;
+                String quantidadeStr = JOptionPane.showInputDialog("Digite a quantidade de cédulas:");
+                if (quantidadeStr == null) return;
 
                 try {
-                    String resultadoReposicao = caixaEletronico.reposicaoCedulas(Integer.parseInt(cedula), Integer.parseInt(quantidade));
-                    display.setText(resultadoReposicao);
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Valores de reposição precisam ser numericos!");
-                }
+                    int quantidade = Integer.parseInt(quantidadeStr);
 
+                    String resultadoReposicao = caixaEletronico.reposicaoCedulas(
+                            cedula,
+                            quantidade
+                    );
+
+                    display.setText(resultadoReposicao);
+
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "A quantidade precisa ser numérica!");
+                }
             }
         });
 
